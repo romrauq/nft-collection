@@ -1,9 +1,10 @@
-// import React, { useEffect, useRef } from "react";
-import styles from "./Home.module.css";
-import Head from "next/head";
-import Web3Modal from "web3modal";
+"use client";
 import { Contract, providers, utils } from "ethers";
+import Head from "next/head";
+import React, { useEffect, useRef, useState } from "react";
+import Web3Modal from "web3modal";
 import { abi, NFT_CONTRACT_ADDRESS } from "../constants";
+import styles from "./Home.module.css";
 
 export default function Home() {
 	// walletConnected keep track of whether the user's wallet is connected or not
@@ -21,12 +22,15 @@ export default function Home() {
 	// Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
 	const web3ModalRef = useRef();
 
-	// presaleMint: Mint an NFT during the presale
+	/**
+	 * presaleMint: Mint an NFT during the presale
+	 */
 	const presaleMint = async () => {
 		try {
 			// We need a Signer here since this is a 'write' transaction.
 			const signer = await getProviderOrSigner(true);
-			// Create a new instance of the Contract with a Signer, which allows update methods
+			// Create a new instance of the Contract with a Signer, which allows
+			// update methods
 			const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 			// call the presaleMint from the contract, only whitelisted addresses would be able to mint
 			const tx = await nftContract.presaleMint({
@@ -44,7 +48,9 @@ export default function Home() {
 		}
 	};
 
-	// publicMint: Mint an NFT after the presale
+	/**
+	 * publicMint: Mint an NFT after the presale
+	 */
 	const publicMint = async () => {
 		try {
 			// We need a Signer here since this is a 'write' transaction.
@@ -68,7 +74,9 @@ export default function Home() {
 		}
 	};
 
-	// connectWallet: Connects the MetaMask wallet
+	/*
+      connectWallet: Connects the MetaMask wallet
+    */
 	const connectWallet = async () => {
 		try {
 			// Get the provider from web3Modal, which in our case is MetaMask
@@ -80,7 +88,9 @@ export default function Home() {
 		}
 	};
 
-	// startPresale: starts the presale for the NFT Collection
+	/**
+	 * startPresale: starts the presale for the NFT Collection
+	 */
 	const startPresale = async () => {
 		try {
 			// We need a Signer here since this is a 'write' transaction.
@@ -101,7 +111,10 @@ export default function Home() {
 		}
 	};
 
-	// checkIfPresaleStarted: checks if the presale has started by querying the `presaleStarted` variable in the contract
+	/**
+	 * checkIfPresaleStarted: checks if the presale has started by querying the `presaleStarted`
+	 * variable in the contract
+	 */
 	const checkIfPresaleStarted = async () => {
 		try {
 			// Get the provider from web3Modal, which in our case is MetaMask
@@ -123,7 +136,10 @@ export default function Home() {
 		}
 	};
 
-	// checkIfPresaleEnded: checks if the presale has ended by querying the `presaleEnded` variable in the contract
+	/**
+	 * checkIfPresaleEnded: checks if the presale has ended by querying the `presaleEnded`
+	 * variable in the contract
+	 */
 	const checkIfPresaleEnded = async () => {
 		try {
 			// Get the provider from web3Modal, which in our case is MetaMask
@@ -151,7 +167,9 @@ export default function Home() {
 		}
 	};
 
-	// getOwner: calls the contract to retrieve the owner
+	/**
+	 * getOwner: calls the contract to retrieve the owner
+	 */
 	const getOwner = async () => {
 		try {
 			// Get the provider from web3Modal, which in our case is MetaMask
@@ -174,7 +192,9 @@ export default function Home() {
 		}
 	};
 
-	// getTokenIdsMinted: gets the number of tokenIds that have been minted
+	/**
+	 * getTokenIdsMinted: gets the number of tokenIds that have been minted
+	 */
 	const getTokenIdsMinted = async () => {
 		try {
 			// Get the provider from web3Modal, which in our case is MetaMask
@@ -224,7 +244,7 @@ export default function Home() {
 		return web3Provider;
 	};
 
-	// useEffects are used to react to changes in state of the website.
+	// useEffects are used to react to changes in state of the website
 	// The array at the end of function call represents what state changes will trigger this effect
 	// In this case, whenever the value of `walletConnected` changes - this effect will be called
 	useEffect(() => {
@@ -265,7 +285,9 @@ export default function Home() {
 		}
 	}, [walletConnected]);
 
-	// renderButton: Returns a button based on the state of the dapp
+	/*
+      renderButton: Returns a button based on the state of the dapp
+    */
 	const renderButton = () => {
 		// If wallet is not connected, return a button which allows them to connect their wallet
 		if (!walletConnected) {
